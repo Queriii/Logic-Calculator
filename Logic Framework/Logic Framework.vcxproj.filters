@@ -26,24 +26,24 @@
     <ClCompile Include="String.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Proposition.cpp">
-      <Filter>Classes</Filter>
+    <ClCompile Include="ExceptionHandler.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.hpp">
       <Filter>Precompiled</Filter>
     </ClInclude>
-    <ClInclude Include="Logic.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="String.hpp">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="SLinkiedList.hpp">
+    <ClInclude Include="ExceptionCodes.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SLinkedList.hpp">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Proposition.hpp">
+    <ClInclude Include="Logic.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

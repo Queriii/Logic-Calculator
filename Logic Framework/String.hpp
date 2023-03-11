@@ -1,42 +1,51 @@
 #pragma once
 
-#define SIZE_T_NEG			(size_t)(-1)
-#define UNSIGNED_INT_NEG	(unsigned int)(-1)
+#define SIZE_T_NEG (size_t)(-1)
 
-class String		//Ascii 
+class String
 {
 private:
-	static size_t	StringLength	(const char* szString);
-	static bool		StringCopy		(char* szTarget, size_t cbTargetSize, const char* szBuffer);
-	static bool		StringAppend	(char* szTarget, size_t cbTargetSize, const char* szBuffer);
-	static bool		StringAppend	(char* szTarget, size_t cbTargetSize, char cBuffer);
+	size_t	ullLength;
+	char*	szString;
 
 
-private:
-//public:
-	size_t	ullLength	= SIZE_T_NEG;
-	size_t	cbBuffer	= NULL;
-	char*	szString	= nullptr;
-
-
+	//Statics
 public:
+	static size_t Strlen(const char* szString);
+
+	
+public:
+	//Instantiation
 	String	(const char* szString);
+	String	(String& Str);
 	~String	();
 
-	const char*		Get				();
-	bool			Paste			(String* pString);
 
-	bool			Append			(const char* szString);
-	bool			Append			(String* pString);
-	unsigned int	ScanPattern		(const char* szPattern, bool bCaseSensitive = true);
-	unsigned int	ScanPattern		(String* pString, bool bCaseSensitive = true);
-	bool			InitialCut		(unsigned int uiIndex);
-	bool			SequentialCut	(unsigned int uiIndex);
-	bool			SegmentCut		(unsigned int uiStartIndex, unsigned int uiEndIndex);
+	//Utility
+	const char* Get			();
+	size_t		Length		();
+	size_t		Scan		(const char* szPattern);
+
+	bool		Insert		(size_t ullIndex, const char* szInsertion);
+	bool		Append		(const char* szAppension);
+	bool		Prepend		(const char* szPrepension);
+
+	bool		Cut			(size_t ullBeginIndex, size_t ullEndIndex);
+	bool		RemoveFirst	();
+	bool		RemoveLast	();
 
 
-public:
-	friend	std::ostream&	operator<<(std::ostream& pStream, const String& pObj);
-			String&			operator+=(const char* szString);
-			char			operator[](unsigned int uiIndex);
+	//Overloading
+	/*void operator=(const String& Str)
+	{
+		char* szCopy = new char[Str.ullLength + 1];
+		for (size_t i = 0; i < Str.ullLength; i++)
+		{
+			szCopy[i] = Str.szString[i];
+		}
+		szCopy[Str.ullLength] = '\0';
+
+		this->szString	= szCopy;
+		this->ullLength = Str.ullLength;
+	}*/
 };
