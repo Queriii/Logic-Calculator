@@ -25,6 +25,7 @@ public:
 	const char* Get			();
 	size_t		Length		();
 	size_t		Scan		(const char* szPattern);
+	size_t		ScanFrom	(const char* szPattern, size_t ullStartIndex);
 
 	bool		Insert		(size_t ullIndex, const char* szInsertion);
 	bool		Append		(const char* szAppension);

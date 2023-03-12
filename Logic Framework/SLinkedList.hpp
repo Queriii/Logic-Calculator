@@ -14,7 +14,7 @@ private:
 			this->pFLink	= nullptr;
 			this->Data		= NULL;
 		}
-		Node(Node* pFLink, DataType& Info)
+		Node(Node* pFLink, const DataType& Info)
 			: Data(Info)
 		{
 			this->pFLink	= pFLink;
@@ -35,10 +35,11 @@ public:
 	//Utility
 	DataType	Get			(size_t ullIndex);
 	size_t		Length		();
+	bool		Lookup		(const DataType& Data);
 
-	bool		Insert		(size_t ullIndex, DataType& Data);	
-	bool		Append		(DataType& Data);
-	bool		Prepend		(DataType& Data); 
+	bool		Insert		(size_t ullIndex, const DataType& Data);	
+	bool		Append		(const DataType& Data);
+	bool		Prepend		(const DataType& Data); 
 
 	DataType	Remove		(size_t ullIndex);
 	DataType	RemoveFirst	();
@@ -72,7 +73,7 @@ template <typename DataType> SLinkedList<DataType>::~SLinkedList()
 
 
 //Utility
-template <typename DataType> DataType SLinkedList<DataType>::Get(size_t ullIndex)
+template <typename DataType> DataType SLinkedList<DataType>::Get(size_t ullIndex)		//Don't reference return...
 {
 	if (ullIndex >= this->ullLength)
 	{
@@ -93,7 +94,24 @@ template <typename DataType> size_t SLinkedList<DataType>::Length()
 	return this->ullLength;
 }
 
-template <typename DataType> bool SLinkedList<DataType>::Insert(size_t ullIndex, DataType& Data)
+template <typename DataType> bool SLinkedList<DataType>::Lookup(const DataType& Data)
+{
+	Node* pTraversal = this->pHead;
+
+	for (size_t i = 0; i < this->ullLength; i++)
+	{
+		if (pTraversal->Data == Data)
+		{
+			return true;
+		}
+
+		pTraversal = pTraversal->pFLink;
+	}
+
+	return false;
+}
+
+template <typename DataType> bool SLinkedList<DataType>::Insert(size_t ullIndex, const DataType& Data)
 {
 	if (ullIndex > this->ullLength)
 	{
@@ -128,12 +146,12 @@ template <typename DataType> bool SLinkedList<DataType>::Insert(size_t ullIndex,
 	return true;
 }
 
-template <typename DataType> bool SLinkedList<DataType>::Append(DataType& Data)
+template <typename DataType> bool SLinkedList<DataType>::Append(const DataType& Data)
 {
 	return (this->Insert(this->ullLength, Data));
 }
 
-template <typename DataType> bool SLinkedList<DataType>::Prepend(DataType& Data)
+template <typename DataType> bool SLinkedList<DataType>::Prepend(const DataType& Data)
 {
 	return (this->Insert(0, Data));
 }

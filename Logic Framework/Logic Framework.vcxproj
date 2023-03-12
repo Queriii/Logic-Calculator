@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="ExceptionHandler.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PropositionRequest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.hpp</PrecompiledHeaderFile>
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="ExceptionCodes.hpp" />
     <ClInclude Include="Logic.hpp" />
+    <ClInclude Include="PropositionRequest.hpp" />
     <ClInclude Include="SLinkedList.hpp" />
     <ClInclude Include="stdafx.hpp" />
     <ClInclude Include="String.hpp" />

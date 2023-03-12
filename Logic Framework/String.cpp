@@ -73,16 +73,12 @@ String::String(String& Str)
 
 String::~String()
 {
-
-
 	if (this->szString)
 	{
-		printf("String | Deconstructor.\n");
 		delete[] this->szString;
 		this->szString	= nullptr;
 	}
 }
-
 
 
 
