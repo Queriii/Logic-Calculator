@@ -7,7 +7,8 @@ class PropositionRequest
 {
 private:
 public:
-	String				Request;
+	String				InfixRequest;
+	String				PostfixRequest;
 	SLinkedList<char>	Variables;
 
 public:

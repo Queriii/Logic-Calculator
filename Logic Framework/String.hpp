@@ -28,8 +28,11 @@ public:
 	size_t		ScanFrom	(const char* szPattern, size_t ullStartIndex);
 
 	bool		Insert		(size_t ullIndex, const char* szInsertion);
+	bool		Insert		(size_t ullIndex, char cInsertion);
 	bool		Append		(const char* szAppension);
+	bool		Append		(char cAppension);
 	bool		Prepend		(const char* szPrepension);
+	bool		Prepend		(char cPrepension);
 
 	bool		Cut			(size_t ullBeginIndex, size_t ullEndIndex);
 	bool		RemoveFirst	();

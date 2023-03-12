@@ -165,14 +165,30 @@ bool String::Insert(size_t ullIndex, const char* szInsertion)
 	return true;
 }
 
+bool String::Insert(size_t ullIndex, char cInsertion)
+{
+	char szChar[2] = { cInsertion, '\0' };
+	return (this->Insert(ullIndex, szChar));
+}
+
 bool String::Append(const char* szAppension)
 {
 	return (this->Insert(this->ullLength, szAppension));
 }
 
+bool String::Append(char cAppension)
+{
+	return (this->Insert(this->ullLength, cAppension));
+}
+
 bool String::Prepend(const char* szPrepension)
 {
 	return (this->Insert(0, szPrepension));
+}
+
+bool String::Prepend(char cPrepension)
+{
+	return (this->Insert(0, cPrepension));
 }
 
 bool String::Cut(size_t ullBeginIndex, size_t ullEndIndex)

@@ -35,6 +35,12 @@ void Handler(int Code)
 		break;
 	}
 
+	case PROPOSITION_REQUEST_CONVERSION_FAILURE:
+	{
+		szMessage = ".-. What happened?\nCode - PROPOSITION_REQUEST_CONVERSION_FAILURE (0x0005)";
+		break;
+	}
+
 	default:
 	{
 		szMessage = ".-. What happened?\nCode - UNKNOWN_EXCEPTION (0x0000)";

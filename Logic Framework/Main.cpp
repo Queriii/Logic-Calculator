@@ -5,5 +5,6 @@
 
 int main()
 {
-	PropositionRequest Test("(A|(B&A)");
+	PropositionRequest Test("(A|B)&C");
+	std::cout << Test.PostfixRequest.Get() << '\n';
 }
