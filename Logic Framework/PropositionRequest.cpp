@@ -288,3 +288,24 @@ catch(int Code)
 {
 	Handler(Code);
 }
+
+void PropositionRequest::Dealloc(Node* pNode)
+{
+	if (!pNode)
+	{
+		return;
+	}
+	else
+	{
+		std::cout << "Dealloc.\n";
+
+		Dealloc(pNode->pLeft);
+		Dealloc(pNode->pRight);
+		delete pNode;
+	}
+}
+
+PropositionRequest::~PropositionRequest()
+{
+	Dealloc(this->pRequestTree);
+}

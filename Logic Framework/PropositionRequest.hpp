@@ -33,6 +33,7 @@ private:
 			this->pRight		= pRight;
 		}
 	};
+	void Dealloc(Node* pNode);		//For use inside destructor only...
 
 public:
 	String				InfixRequest;
@@ -42,5 +43,5 @@ public:
 
 public:
 	PropositionRequest(const char* szRequest);
-	//~PropositionRequest();
+	~PropositionRequest();
 };
