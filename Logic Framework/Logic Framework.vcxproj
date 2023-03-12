@@ -159,6 +159,7 @@
     <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryTree.hpp" />
     <ClInclude Include="ExceptionCodes.hpp" />
     <ClInclude Include="Logic.hpp" />
     <ClInclude Include="PropositionRequest.hpp" />
