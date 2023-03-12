@@ -41,6 +41,12 @@ void Handler(int Code)
 		break;
 	}
 
+	case PROPOSITION_REQUEST_TREE_CREATION_FAILURE:
+	{
+		szMessage = ".-. What happened?\nCode - PROPOSITION_REQUEST_TREE_CREATION_FAILURE (0x0006)";
+		break;
+	}
+
 	default:
 	{
 		szMessage = ".-. What happened?\nCode - UNKNOWN_EXCEPTION (0x0000)";

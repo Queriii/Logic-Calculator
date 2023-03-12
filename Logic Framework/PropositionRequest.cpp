@@ -5,11 +5,24 @@
 
 
 
-constexpr char PRECEDENCE_ARRAY[] = { '|', '&' };		//Right indicates higher precedence, this is modifiable if so desired...
+constexpr char PRECEDENCE_ARRAY[] = { '|', '&', '!'};		//Right indicates higher precedence, this is modifiable if so desired (except for negations)...
+
+bool IsOperator(const char& cCharacter)
+{
+	for (int i = 0; i < _countof(PRECEDENCE_ARRAY); i++)
+	{
+		if (cCharacter == PRECEDENCE_ARRAY[i])
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
 
 bool IsValidSymbol(const char& cCharacter)
 {
-	if ((cCharacter >= 'A' && cCharacter <= 'Z') || cCharacter == '|' || cCharacter == '&' || cCharacter == '!' || cCharacter == '(' || cCharacter == ')')
+	if ((cCharacter >= 'A' && cCharacter <= 'Z') || cCharacter == '|' || cCharacter == '&' || cCharacter == '!' || cCharacter == '(' || cCharacter == ')' || cCharacter == '!')
 	{
 		return true;
 	}
@@ -212,6 +225,64 @@ PropositionRequest::PropositionRequest(const char* szRequest)
 	{
 		throw PROPOSITION_REQUEST_CONVERSION_FAILURE;
 	}
+
+	SLinkedList<Node*> NodeStack;
+	const char* szPostfixRequest = this->PostfixRequest.Get();
+	for (size_t i = 0; i < this->PostfixRequest.Length(); i++)
+	{
+		if (IsOperator(szPostfixRequest[i]))
+		{
+			if (szPostfixRequest[i] == '!')
+			{
+				if (NodeStack.Length() < 1)
+				{
+					throw PROPOSITION_REQUEST_TREE_CREATION_FAILURE;
+				}
+
+				Node* pFirst = NodeStack.RemoveLast();
+				Node* pCombined = new Node(szPostfixRequest[i], OPERATOR_TYPE, pFirst, nullptr);	//Negation nodes are always to left, right is always null.
+				if (!NodeStack.Append(pCombined))
+				{
+					throw PROPOSITION_REQUEST_TREE_CREATION_FAILURE;
+				}
+			}
+			else
+			{
+				if (NodeStack.Length() < 2)
+				{
+					throw PROPOSITION_REQUEST_TREE_CREATION_FAILURE;
+				}
+
+				Node* pFirst	= NodeStack.RemoveLast();
+				Node* pSecond	= NodeStack.RemoveLast();
+				Node* pCombined = new Node(szPostfixRequest[i], OPERATOR_TYPE, pSecond, pFirst);
+				if (!NodeStack.Append(pCombined))
+				{
+					throw PROPOSITION_REQUEST_TREE_CREATION_FAILURE;
+				}
+			}
+		}
+		else
+		{
+			Node* pNewNode = new Node(szPostfixRequest[i], OPERAND_TYPE, nullptr, nullptr);
+			if (!pNewNode)
+			{
+				throw PROPOSITION_REQUEST_TREE_CREATION_FAILURE;
+			}
+
+			if (!NodeStack.Append(pNewNode))
+			{
+				throw PROPOSITION_REQUEST_TREE_CREATION_FAILURE;
+			}
+		}
+	}
+
+	if (NodeStack.Length() != 1)
+	{
+		throw PROPOSITION_REQUEST_TREE_CREATION_FAILURE;
+	}
+
+	this->pRequestTree = NodeStack.RemoveLast();
 }
 catch(int Code)
 {
