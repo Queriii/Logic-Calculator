@@ -95,15 +95,20 @@ size_t	String::Length()
 
 size_t String::Scan(const char* szPattern)
 {
-	if (!szPattern)
+	return (this->ScanFrom(szPattern, 0));
+}
+
+size_t String::ScanFrom(const char* szPattern, size_t ullStartIndex)
+{
+	if (!szPattern || ullStartIndex >= this->ullLength)
 	{
 		return SIZE_T_NEG;
 	}
 
-	for (size_t i = 0, j = 0; i < this->ullLength; i++)
+	for (size_t i = ullStartIndex, j = 0; i < this->ullLength; i++)
 	{
 		if (this->szString[i] == szPattern[j])
-		{	
+		{
 			j++;
 			if (j == String::Strlen(szPattern))
 			{
@@ -115,7 +120,7 @@ size_t String::Scan(const char* szPattern)
 			j = 0;
 		}
 	}
-	
+
 	return SIZE_T_NEG;
 }
 

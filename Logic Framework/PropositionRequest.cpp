@@ -51,24 +51,8 @@ bool ValidateParenthesis(const char* szRequest)
 	return (ParenthesisCheck.Length() == 0);
 }
 
-String ParseRequest(String RequestCopy)
-{
-	String ParsedRequest("");
-
-	while (RequestCopy.Scan("!(") != SIZE_T_NEG)
-	{
-		size_t NegationDistributionStart = RequestCopy.Scan("!(");
-		if (NegationDistributionStart == SIZE_T_NEG)
-		{
-			throw PARSING_FAILURE;
-		}
-
-		
-	}
-}
-
 PropositionRequest::PropositionRequest(const char* szRequest)
-	try : Request(szRequest), ParsedRequest(""), Variables()
+	try : Request(szRequest), Variables()
 {
 	size_t ullRequestLength = String::Strlen(szRequest);
 	if (!ullRequestLength || ullRequestLength == SIZE_T_NEG)
