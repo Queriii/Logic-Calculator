@@ -2,6 +2,6 @@
 
 typedef struct ValueAssignment
 {
-	char cVariable;
-	bool bValue;
+    char cVariable;
+    bool bValue;
 }ValueAssignment, * PValueAssignment;

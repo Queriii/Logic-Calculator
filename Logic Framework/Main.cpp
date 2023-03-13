@@ -6,25 +6,36 @@
 
 
 
+#define MAX_REQUEST 0x100
+
 int main()
 {
-	SLinkedList<ValueAssignment> Test;
-	ValueAssignment A;
-	A.bValue = true;
-	A.cVariable = 'A';
+    char szInput[MAX_REQUEST]{};
 
-	ValueAssignment B;
-	B.bValue = false;
-	B.cVariable = 'B';
+    try
+    {
+        for (;;)
+        {
+            printf("> "); 
+            if (!fgets(szInput, MAX_REQUEST, stdin))
+            {
+                throw REQUEST_RECEIVAL_FAILED; 
+            }
+             
+            size_t ullInputLength = String::Strlen(szInput); 
+            if (ullInputLength == SIZE_T_NEG || ullInputLength == MAX_REQUEST - 1) 
+            {
+                throw REQUEST_MAX_LENGTH_EXCEEDED; 
+            }
 
-	ValueAssignment c;
-	c.bValue = true;
-	c.cVariable = 'C';
-	Test.Append(A);
-	Test.Append(B);
-	Test.Append(c);
+            String Input(szInput); 
+            Input.RemoveLast();
 
-
-	PropositionRequest Test2("(A|B)&!C");
-	std::cout << Test2.Evaluate(Test) << '\n';
+            ZeroMemory(szInput, MAX_REQUEST); 
+        }
+    }
+    catch (int ExceptionCode)
+    {
+        Handler(ExceptionCode);
+    }
 }
