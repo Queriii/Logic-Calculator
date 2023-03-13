@@ -127,6 +127,25 @@ int main()
 {
     char szInput[MAX_REQUEST]{};
 
+ /*   PropositionRequest Test("A|B&C");
+    ValueAssignment A;
+    A.bValue = 1;
+    A.cVariable = 'A';
+    ValueAssignment B;
+    B.bValue = 0;
+    B.cVariable = 'B';
+    ValueAssignment C;
+    C.bValue = 0;
+    C.cVariable = 'C';
+
+    SLinkedList<ValueAssignment> Test2;
+    Test2.Append(A);
+    Test2.Append(B);
+    Test2.Append(C);
+    std::cout << Test.Evaluate(Test2) << '\n';*/
+
+  //  return 0;
+
     try
     {
         HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
