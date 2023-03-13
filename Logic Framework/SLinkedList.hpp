@@ -77,7 +77,7 @@ template <typename DataType> DataType SLinkedList<DataType>::Get(size_t ullIndex
 {
 	if (ullIndex >= this->ullLength)
 	{
-		return NULL;
+		return {};
 	}
 
 	Node* pTraversal = this->pHead;

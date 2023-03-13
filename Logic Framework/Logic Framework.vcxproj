@@ -165,6 +165,7 @@
     <ClInclude Include="SLinkedList.hpp" />
     <ClInclude Include="stdafx.hpp" />
     <ClInclude Include="String.hpp" />
+    <ClInclude Include="ValueAssignment.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

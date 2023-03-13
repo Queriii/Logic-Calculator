@@ -7,6 +7,7 @@
 
 constexpr char PRECEDENCE_ARRAY[] = { '|', '&', '!'};		//Right indicates higher precedence, this is modifiable if so desired (except for negations)...
 
+//Instantiation helpers
 bool IsOperator(const char& cCharacter)
 {
 	for (int i = 0; i < _countof(PRECEDENCE_ARRAY); i++)
@@ -191,6 +192,9 @@ bool ConvertRequestToPostfix(const char* szInfixRequest, String* pPostfixBuffer)
 	}
 }
 
+
+
+//Instantiation
 PropositionRequest::PropositionRequest(const char* szRequest)
 	try : InfixRequest(szRequest), Variables(), PostfixRequest("")
 {
@@ -297,15 +301,84 @@ void PropositionRequest::Dealloc(Node* pNode)
 	}
 	else
 	{
-		std::cout << "Dealloc.\n";
-
 		Dealloc(pNode->pLeft);
 		Dealloc(pNode->pRight);
 		delete pNode;
 	}
 }
-
 PropositionRequest::~PropositionRequest()
 {
 	Dealloc(this->pRequestTree);
+}
+
+
+
+//Utility
+bool PropositionRequest::Eval(Node* pHead, SLinkedList<ValueAssignment>& TruthValues)
+{
+	if (!pHead)
+	{
+		throw PROPOSITION_INVALID_TRUTH_VALUES;
+	}
+
+	if (pHead->uiTypeFlag == OPERAND_TYPE)
+	{
+		int bReturnValue = -1;
+		for (size_t i = 0; i < TruthValues.Length(); i++)
+		{
+			if (TruthValues.Get(i).cVariable == pHead->cSymbol)
+			{
+				bReturnValue = TruthValues.Get(i).bValue;
+			}
+		}
+
+		if (bReturnValue == -1)
+		{
+			throw PROPOSITION_INVALID_TRUTH_VALUES;
+		}
+
+		return (static_cast<bool>(bReturnValue));
+	}
+	else
+	{
+		switch (pHead->cSymbol)
+		{
+
+		case '!':
+		{
+			bool bResult = Eval(pHead->pLeft, TruthValues);
+			return !bResult;
+		}
+
+		case '&':
+		{
+			bool bResult1 = Eval(pHead->pLeft, TruthValues);
+			bool bResult2 = Eval(pHead->pRight, TruthValues);
+			return bResult1 && bResult2;
+		}
+
+		case '|':
+		{
+			bool bResult1 = Eval(pHead->pLeft, TruthValues);
+			bool bResult2 = Eval(pHead->pRight, TruthValues);
+			return bResult1 || bResult2;
+		}
+
+		default:
+		{
+			throw PROPOSITION_INVALID_TRUTH_VALUES;
+		}
+
+		}
+	}
+}
+
+bool PropositionRequest::Evaluate(SLinkedList<ValueAssignment>& TruthValues)
+{
+	if (TruthValues.Length() != this->Variables.Length())
+	{
+		throw PROPOSITION_INVALID_TRUTH_VALUES;
+	}
+
+	return (this->Eval(this->pRequestTree, TruthValues));
 }

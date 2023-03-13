@@ -52,5 +52,8 @@
     <ClInclude Include="PropositionRequest.hpp">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="ValueAssignment.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

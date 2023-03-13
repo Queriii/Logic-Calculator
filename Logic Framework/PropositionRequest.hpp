@@ -1,5 +1,6 @@
 #include "String.hpp"
 #include "SLinkedList.hpp"
+#include "ValueAssignment.hpp"
 
 
 
@@ -33,7 +34,9 @@ private:
 			this->pRight		= pRight;
 		}
 	};
+
 	void Dealloc(Node* pNode);		//For use inside destructor only...
+	bool Eval	(Node* pHead, SLinkedList<ValueAssignment>& TruthValues);
 
 public:
 	String				InfixRequest;
@@ -42,6 +45,11 @@ public:
 	SLinkedList<char>	Variables;
 
 public:
-	PropositionRequest(const char* szRequest);
-	~PropositionRequest();
+	//Instantiation
+	PropositionRequest	(const char* szRequest);
+	~PropositionRequest	();
+
+
+	//Utility
+	bool Evaluate		(SLinkedList<ValueAssignment>& TruthValues);
 };
