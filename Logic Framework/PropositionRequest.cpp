@@ -411,7 +411,6 @@ void PropositionRequest::GenerateTable()
         unsigned int uiRowCopy = uiRows;
         for (size_t i = this->Variables.Length() - 1; i != SIZE_T_NEG; i--, uiRowCopy >>= 1)
         {
-            //std::cout << this->Variables.Get(i) << " | " << (uiRowCopy & 0b1) << '\n';
             TruthValues.Prepend({ this->Variables.Get(i), static_cast<bool>(uiRowCopy & 0b1)});
         }
 
