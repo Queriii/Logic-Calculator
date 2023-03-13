@@ -230,8 +230,8 @@ PropositionRequest::PropositionRequest(const char* szRequest)
         throw PROPOSITION_REQUEST_CONVERSION_FAILURE;
     }
 
-    SLinkedList<Node*> NodeStack;
-    const char* szPostfixRequest = this->PostfixRequest.Get();
+    SLinkedList<Node*>  NodeStack;
+    const char*         szPostfixRequest = this->PostfixRequest.Get();
     for (size_t i = 0; i < this->PostfixRequest.Length(); i++)
     {
         if (IsOperator(szPostfixRequest[i]))
@@ -381,4 +381,52 @@ bool PropositionRequest::Evaluate(SLinkedList<ValueAssignment>& TruthValues)
     }
 
     return (this->Eval(this->pRequestTree, TruthValues));
+}
+
+void PropositionRequest::GenerateTable()
+{
+    int uiRows = 1;
+    String Marker("");
+    for (int i = 0; i < this->Variables.Length(); i++)
+    {
+        Marker.Append("---");
+        if (i == this->Variables.Length() - 1)
+        {
+            Marker.Append('\n');
+            printf("%c\n", this->Variables.Get(i));
+        }
+        else
+        {
+            printf("%c | ", this->Variables.Get(i));
+        }
+        uiRows *= 2;
+    }
+    uiRows -= 1;
+    printf(Marker.Get());
+
+    for (; uiRows >= 0; uiRows--)
+    {
+        SLinkedList<ValueAssignment> TruthValues;
+
+        unsigned int uiRowCopy = uiRows;
+        for (size_t i = 0; i < this->Variables.Length(); i++, uiRowCopy >>= 1)
+        {
+            TruthValues.Prepend({ this->Variables.Get(i), static_cast<bool>(uiRowCopy & 0b1)});
+        }
+
+        for (size_t i = 0; i < TruthValues.Length(); i++)
+        {
+            if (i == TruthValues.Length() - 1)
+            {
+                printf("%i --> ", TruthValues.Get(i).bValue);
+            }
+            else
+            {
+                printf("%i | ", TruthValues.Get(i).bValue);
+            }
+            
+        }
+        printf("%i\n", this->Evaluate(TruthValues));
+    }
+    printf("\n");
 }

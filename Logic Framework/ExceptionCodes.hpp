@@ -9,5 +9,7 @@
 #define PROPOSITION_INVALID_TRUTH_VALUES			0x0007
 #define REQUEST_RECEIVAL_FAILED						0x0008
 #define REQUEST_MAX_LENGTH_EXCEEDED					0x0009
+#define STDOUT_HANDLE_REQUEST_FAILED                0x0010
+#define REQUEST_HANDLING_FAILED                     0x0011
 
 void Handler(int Code);

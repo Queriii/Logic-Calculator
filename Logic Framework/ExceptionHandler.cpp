@@ -46,16 +46,33 @@ void Handler(int Code)
         szMessage = ".-. What happened?\nCode - PROPOSITION_REQUEST_TREE_CREATION_FAILURE (0x0006)";
         break;
     }
+    
+    case PROPOSITION_INVALID_TRUTH_VALUES:
+    {
+        szMessage = ".-. What happened?\nCode - PROPOSITION_INVALID_TRUTH_VALUES (0x0007)";
+    }
 
     case REQUEST_RECEIVAL_FAILED:
     {
-        szMessage = ".-. What happened?\nCode - REQUEST_RECEIVAL_FAILED (0x0007)";
+        szMessage = ".-. What happened?\nCode - REQUEST_RECEIVAL_FAILED (0x0008)";
         break;
     }
 
     case REQUEST_MAX_LENGTH_EXCEEDED:
     {
-        szMessage = ".-. What happened?\nCode - REQUEST_MAX_LENGTH_EXCEEDED (0x0008)";
+        szMessage = ".-. What happened?\nCode - REQUEST_MAX_LENGTH_EXCEEDED (0x0009)";
+        break;
+    }
+
+    case STDOUT_HANDLE_REQUEST_FAILED:
+    {
+        szMessage = ".-. What happened?\nCode - STDOUT_HANDLE_REQUEST_FAILED (0x0010)";
+        break;
+    }
+
+    case REQUEST_HANDLING_FAILED:
+    {
+        szMessage = ".-. What happened?\nCode - REQUEST_HANDLING_FAILED (0x0011)";
         break;
     }
 

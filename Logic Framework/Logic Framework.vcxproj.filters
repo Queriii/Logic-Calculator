@@ -55,5 +55,8 @@
     <ClInclude Include="ValueAssignment.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AvailableCommands.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

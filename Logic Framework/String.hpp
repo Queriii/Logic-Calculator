@@ -16,13 +16,14 @@ public:
     
 public:
     //Instantiation
+    String  ();
     String  (const char* szString);
-    String  (String& Str);
+    String  (const String& Str);
     ~String ();
 
 
     //Utility
-    const char* Get         ();
+    const char* Get         () const;
     size_t      Length      ();
     size_t      Scan        (const char* szPattern);
     size_t      ScanFrom    (const char* szPattern, size_t ullStartIndex);

@@ -25,6 +25,17 @@ size_t String::Strlen(const char* szString)
 
 
 //Instantiation
+String::String()
+{
+    this->szString = new char[1] {};
+    if (!this->szString)
+    {
+        throw STRING_INIT_FAILURE;
+    }
+
+    this->ullLength = 0;
+}
+
 String::String(const char* szString)
 {
     if (!szString)
@@ -53,7 +64,7 @@ String::String(const char* szString)
     this->ullLength = ullLength;
 }
 
-String::String(String& Str)
+String::String(const String& Str)
 {
     size_t ullLength    = Str.ullLength;
     this->szString      = new char[ullLength + 1] {};
@@ -83,7 +94,7 @@ String::~String()
 
 
 //Utility
-const char* String::Get()
+const char* String::Get() const
 {
     return this->szString;
 }
