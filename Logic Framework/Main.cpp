@@ -10,8 +10,10 @@
 
 enum Commands
 {
-    Help    = 0,
-    Table   = 1,
+    Help            = 0,
+    Table           = 1,
+    Tautology       = 2,
+    Contradiction   = 3,
 };
 
 typedef struct CommandPair
@@ -19,7 +21,7 @@ typedef struct CommandPair
     const char*     szCommand;
     unsigned int    uiArgs;
 }CommandPair, * PCommandPair;
-constexpr CommandPair RECOGNIZED_COMMANDS[] = { {"Yggdrasil.help", 0}, {"Yggdrasil.table ", 1} };       //Commands with no args, don't have a trailing space...
+constexpr CommandPair RECOGNIZED_COMMANDS[] = { {"Yggdrasil.help", 0}, {"Yggdrasil.table ", 1}, {"Yggdrasil.tautology ", 1}, {"Yggdrasil.contradiction ", 1} };       //Commands with no args, don't have a trailing space...
 
 int ValidateRequest(String Request)
 {
@@ -117,6 +119,34 @@ void ServiceRequest(String Request, int iCommandId)
     {
         PropositionRequest Request(Args.Get(0).Get());
         Request.GenerateTable();
+        break;
+    }
+
+    case Commands::Tautology:
+    {
+        PropositionRequest Request(Args.Get(0).Get());
+        if (Request.IsTautology())
+        {
+            printf("True\n\n");
+        }
+        else
+        {
+            printf("False\n\n");
+        }
+        break;
+    }
+    
+    case Commands::Contradiction:
+    {
+        PropositionRequest Request(Args.Get(0).Get());
+        if (Request.IsContradiction())
+        {
+            printf("True\n\n");
+        }
+        else
+        {
+            printf("False\n\n");
+        }
         break;
     }
 

@@ -5,7 +5,7 @@
 
 
 
-constexpr char PRECEDENCE_ARRAY[] = { '|', '&', '!'};       //Right indicates higher precedence, this is modifiable if so desired (except for negations)...
+constexpr char PRECEDENCE_ARRAY[] = { '|', '&', '>', '~', '!'};       //Right indicates higher precedence, this is modifiable if so desired (except for negations)...
 
 //Instantiation helpers
 bool IsOperator(const char& cCharacter)
@@ -23,14 +23,20 @@ bool IsOperator(const char& cCharacter)
 
 bool IsValidSymbol(const char& cCharacter)
 {
-    if ((cCharacter >= 'A' && cCharacter <= 'Z') || cCharacter == '|' || cCharacter == '&' || cCharacter == '!' || cCharacter == '(' || cCharacter == ')' || cCharacter == '!')
+    if (cCharacter >= 'A' && cCharacter <= 'Z')
     {
         return true;
     }
-    else
+
+    for (int i = 0; i < _countof(PRECEDENCE_ARRAY); i++)
     {
-        return false;
+        if (cCharacter == PRECEDENCE_ARRAY[i])
+        {
+            return true;
+        }
     }
+
+    return false;
 }
 
 bool ValidateParenthesis(const char* szRequest)
@@ -364,6 +370,20 @@ bool PropositionRequest::Eval(Node* pHead, SLinkedList<ValueAssignment>& TruthVa
             return bResult1 || bResult2;
         }
 
+        case '>':
+        {
+            bool bResult1 = Eval(pHead->pLeft, TruthValues);
+            bool bResult2 = Eval(pHead->pRight, TruthValues);
+            return ((!bResult1 && !bResult2) || (!bResult1 && bResult2) || (bResult1 && bResult2));
+        }
+
+        case '~':
+        {
+            bool bResult1 = Eval(pHead->pLeft, TruthValues);
+            bool bResult2 = Eval(pHead->pRight, TruthValues);
+            return ((!bResult1 && !bResult2) || (bResult1 && bResult2));
+        }
+
         default:
         {
             throw PROPOSITION_INVALID_TRUTH_VALUES;
@@ -385,7 +405,7 @@ bool PropositionRequest::Evaluate(SLinkedList<ValueAssignment>& TruthValues)
 
 void PropositionRequest::GenerateTable()
 {
-    int uiRows = 1;
+    int iRows = 1;
     String Marker("");
     for (int i = 0; i < this->Variables.Length(); i++)
     {
@@ -399,16 +419,16 @@ void PropositionRequest::GenerateTable()
         {
             printf("%c | ", this->Variables.Get(i));
         }
-        uiRows *= 2;
+        iRows *= 2;
     }
-    uiRows -= 1;
+    iRows -= 1;
     printf(Marker.Get());
 
-    for (; uiRows >= 0; uiRows--)
+    for (; iRows >= 0; iRows--)
     {
         SLinkedList<ValueAssignment> TruthValues;
 
-        unsigned int uiRowCopy = uiRows;
+        unsigned int uiRowCopy = iRows;
         for (size_t i = this->Variables.Length() - 1; i != SIZE_T_NEG; i--, uiRowCopy >>= 1)
         {
             TruthValues.Prepend({ this->Variables.Get(i), static_cast<bool>(uiRowCopy & 0b1)});
@@ -429,4 +449,60 @@ void PropositionRequest::GenerateTable()
         printf("%i\n", this->Evaluate(TruthValues));
     }
     printf("\n");
+}
+
+int Pwer(int i, int k)
+{
+    for (int j = i; k > 0; k--)
+    {
+        i *= j;
+    }
+
+    return i;
+}
+
+bool PropositionRequest::IsTautology()
+{
+    int iRows = Pwer(2, this->Variables.Length());
+
+    for (; iRows >= 0; iRows--)
+    {
+        SLinkedList<ValueAssignment> TruthValues;
+
+        unsigned int uiRowCopy = iRows;
+        for (size_t i = this->Variables.Length() - 1; i != SIZE_T_NEG; i--, uiRowCopy >>= 1)
+        {
+            TruthValues.Prepend({ this->Variables.Get(i), static_cast<bool>(uiRowCopy & 0b1) });
+        }
+
+        if (!this->Evaluate(TruthValues))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool PropositionRequest::IsContradiction()
+{
+    int iRows = Pwer(2, this->Variables.Length());
+
+    for (; iRows >= 0; iRows--)
+    {
+        SLinkedList<ValueAssignment> TruthValues;
+
+        unsigned int uiRowCopy = iRows;
+        for (size_t i = this->Variables.Length() - 1; i != SIZE_T_NEG; i--, uiRowCopy >>= 1)
+        {
+            TruthValues.Prepend({ this->Variables.Get(i), static_cast<bool>(uiRowCopy & 0b1) });
+        }
+
+        if (this->Evaluate(TruthValues))
+        {
+            return false;
+        }
+    }
+
+    return true;
 }

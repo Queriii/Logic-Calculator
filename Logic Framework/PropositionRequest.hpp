@@ -53,4 +53,6 @@ public:
     //Utility
     bool Evaluate       (SLinkedList<ValueAssignment>& TruthValues);
     void GenerateTable  ();
+    bool IsTautology    ();
+    bool IsContradiction();
 };
