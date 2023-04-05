@@ -1,7 +1,7 @@
-#Yggdrasil
+# Yggdrasil
 - Commandline style calculator for performing generic logic operations.
 ______________________________________________________
-##Commands
+## Commands
 - Yggdrasil.help
 - Yggdrasil.table         [expr]
 - Yggdrasil.tautology     [expr]
@@ -10,7 +10,7 @@ ______________________________________________________
   - Not implemented in current build.
 **When denoting propositional variables, declare them using capital letters**
 ______________________________________________________
-##Formatting/Valid Operations
+## Formatting/Valid Operations
 - !   : Negation
 - |   : Or
 - &   : And
@@ -18,5 +18,5 @@ ______________________________________________________
 - ~   : Biconditional
 - ()  : Parenthesis function as normal when denoting precedence.
 ______________________________________________________
-##Demonstration
+## Demonstration
 https://user-images.githubusercontent.com/88565070/230208334-9646ed93-4c56-4fb5-ac43-6f5b268e8e4e.mp4
