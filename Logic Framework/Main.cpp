@@ -14,48 +14,60 @@ enum Commands
     Table           = 1,
     Tautology       = 2,
     Contradiction   = 3,
+    Argument        = 4,
 };
 
 typedef struct CommandPair
 {
     const char*     szCommand;
-    unsigned int    uiArgs;
+    int    uiArgs;
 }CommandPair, * PCommandPair;
-constexpr CommandPair RECOGNIZED_COMMANDS[] = { {"Yggdrasil.help", 0}, {"Yggdrasil.table ", 1}, {"Yggdrasil.tautology ", 1}, {"Yggdrasil.contradiction ", 1} };       //Commands with no args, don't have a trailing space...
+constexpr CommandPair RECOGNIZED_COMMANDS[] = { {"Yggdrasil.help", 0}, {"Yggdrasil.table ", 1}, {"Yggdrasil.tautology ", 1}, {"Yggdrasil.contradiction ", 1}, {"Yggdrasil.argument ", -2}};       //Commands with no args, don't have a trailing space. Negative indicates minimum required...
 
-int ValidateRequest(String Request)
+typedef struct RequestInfo
 {
-    int     iCommandId      = NULL;
-    bool    bCommandValid   = false;
+    int iCommandID;
+    int iArgs;
+}RequestInfo;
+
+RequestInfo ValidateRequest(String Request)
+{
+    int     iCommandId = NULL;
+    bool    bCommandValid = false;
+    bool    bMinimumFlag = false;
     for (int i = 0; i < _countof(RECOGNIZED_COMMANDS); i++)
     {
         if (Request.Scan(RECOGNIZED_COMMANDS[i].szCommand) == 0)
         {
             iCommandId = i;
-
             if (RECOGNIZED_COMMANDS[i].uiArgs == 0)
             {
                 bCommandValid = (Request.Length() == String::Strlen(RECOGNIZED_COMMANDS[i].szCommand));
                 if (bCommandValid)
                 {
-                    return iCommandId;
+                    return {iCommandId, 0};
                 }
                 else
                 {
-                    return -1;
+                    return { -1, 0 };
                 }
+            }
+            else if (RECOGNIZED_COMMANDS[i].uiArgs < 0)
+            {
+                bMinimumFlag = true;
+                bCommandValid = true;
             }
             else
             {
                 bCommandValid = true;
             }
-            
+
             break;
         }
     }
     if (!bCommandValid)
     {
-        return -1;
+        return { -1, 0 };
     }
 
     int     uiArgCount      = 0;
@@ -68,22 +80,33 @@ int ValidateRequest(String Request)
             break;
         }
     }
-    if (uiArgCount != RECOGNIZED_COMMANDS[iCommandId].uiArgs)
+    if (bMinimumFlag)
     {
-        return -1;
+        if (uiArgCount < (RECOGNIZED_COMMANDS[iCommandId].uiArgs * -1))
+        {
+           
+            return { -1, 0 };
+        }
+    }
+    else
+    {
+        if (uiArgCount != RECOGNIZED_COMMANDS[iCommandId].uiArgs)
+        {
+            return { -1, 0 };
+        }
     }
 
-    return iCommandId;
+    return { iCommandId, uiArgCount };
 }
 
-void ServiceRequest(String Request, int iCommandId)
+void ServiceRequest(String Request, RequestInfo Info)
 {
     SLinkedList<String> Args;
     size_t ullStart = 0;
     size_t ullEnd   = Request.Scan(" ");
-    for (int i = 0; i < RECOGNIZED_COMMANDS[iCommandId].uiArgs; i++) 
+    for (int i = 0; i < Info.iArgs; i++) 
     {
-        if (i == RECOGNIZED_COMMANDS[iCommandId].uiArgs - 1) 
+        if (i == Info.iArgs - 1) 
         {
             ullStart    = ullEnd;
             ullEnd      = Request.Length() - 1;
@@ -106,7 +129,7 @@ void ServiceRequest(String Request, int iCommandId)
         Args.Append(Arg.Get()); 
     } 
 
-    switch (iCommandId)
+    switch (Info.iCommandID)
     {
 
     case Commands::Help:
@@ -150,6 +173,46 @@ void ServiceRequest(String Request, int iCommandId)
         break;
     }
 
+    case Commands::Argument:
+    {
+        String ConvertedArgument("");
+        for (size_t i = 0; i < Args.Length(); i++)
+        {
+            if (i == Args.Length() - 1)
+            {
+                ConvertedArgument.Append("(");
+                ConvertedArgument.Append(Args.Get(i).Get());
+                ConvertedArgument.Append(")");
+            }
+            else
+            {
+                ConvertedArgument.Append("(");
+                ConvertedArgument.Append(Args.Get(i).Get());
+
+                if (i == Args.Length() - 2)
+                {
+                    ConvertedArgument.Append(")>");
+                }
+                else
+                {
+                    ConvertedArgument.Append(")&");
+                }
+            }
+        }
+
+        PropositionRequest Request(ConvertedArgument.Get());
+        if (Request.IsTautology())
+        {
+            printf("Valid argument\n\n");
+        }
+        else
+        {
+            printf("Invalid argument\n\n");
+        }
+
+        break;
+    }
+
     }
 }
 
@@ -186,8 +249,8 @@ int main()
                 break;
             }
 
-            int iCommandId = ValidateRequest(Input);
-            if (iCommandId == -1)
+            RequestInfo Response = ValidateRequest(Input);
+            if (Response.iCommandID == -1)
             {
                 SetConsoleTextAttribute(hStdout, 4);
                 system("CLS");
@@ -203,7 +266,7 @@ int main()
             else
             {
                 SetConsoleTextAttribute(hStdout, 2);
-                ServiceRequest(Input, iCommandId);
+                ServiceRequest(Input, Response);
                 SetConsoleTextAttribute(hStdout, 7);
             }
 

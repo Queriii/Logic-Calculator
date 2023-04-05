@@ -23,7 +23,7 @@ bool IsOperator(const char& cCharacter)
 
 bool IsValidSymbol(const char& cCharacter)
 {
-    if (cCharacter >= 'A' && cCharacter <= 'Z')
+    if ((cCharacter >= 'A' && cCharacter <= 'Z') || cCharacter == ')' || cCharacter == '(')
     {
         return true;
     }
@@ -212,6 +212,7 @@ PropositionRequest::PropositionRequest(const char* szRequest)
 
     if (!ValidateParenthesis(szRequest))
     {
+        
         throw PROPOSITION_REQUEST_INVALID_PARENTHESIS;
     }
 
@@ -219,6 +220,7 @@ PropositionRequest::PropositionRequest(const char* szRequest)
     {
         if (!IsValidSymbol(szRequest[i]))
         {
+            system("pause");
             throw PROPOSITION_REQUEST_INIT_FAILURE;
         }
 
@@ -451,7 +453,7 @@ void PropositionRequest::GenerateTable()
     printf("\n");
 }
 
-int Pwer(int i, int k)
+inline int Pwer(int i, int k)
 {
     for (int j = i; k > 0; k--)
     {
@@ -460,7 +462,6 @@ int Pwer(int i, int k)
 
     return i;
 }
-
 bool PropositionRequest::IsTautology()
 {
     int iRows = Pwer(2, this->Variables.Length());
