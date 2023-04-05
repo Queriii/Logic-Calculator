@@ -8,6 +8,7 @@ ______________________________________________________
 - Yggdrasil.contradiction [expr]
 - Yggdrasil.argument      [expr1, expr2, ..., concl]
   - Not implemented in current build.
+
 **When denoting propositional variables, declare them using capital letters**
 ______________________________________________________
 ## Formatting/Valid Operations
