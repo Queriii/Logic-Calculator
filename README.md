@@ -11,12 +11,12 @@ ______________________________________________________
 **When denoting propositional variables, declare them using capital letters**
 ______________________________________________________
 ## Formatting/Valid Operations
-- !   : Negation
-- |   : Or
-- &   : And
-- >   : Implication
-- ~   : Biconditional
-- ()  : Parenthesis function as normal when denoting precedence.
+- *!*   : Negation
+- *|*   : Or (Divides symbol)
+- *&*   : And
+- *>*   : Implication
+- *~*   : Biconditional
+- *()*  : Parenthesis function as normal when denoting precedence.
 ______________________________________________________
 ## Demonstration
 https://user-images.githubusercontent.com/88565070/230208334-9646ed93-4c56-4fb5-ac43-6f5b268e8e4e.mp4
