@@ -1,5 +1,5 @@
 # Yggdrasil
-- Commandline style calculator for performing generic logic operations.
+- Command line style calculator for performing generic logic operations.
 ______________________________________________________
 ## Commands
 - Yggdrasil.help
